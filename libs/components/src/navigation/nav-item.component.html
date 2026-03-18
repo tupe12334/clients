@@ -1,21 +1,31 @@
 <div class="tw-ps-2 tw-pe-2 tw-cursor-pointer">
   @let open = sideNavService.open();
-  @let containerClasses =
-    "tw-size-full tw-px-0 tw-block tw-truncate tw-border-none tw-bg-transparent tw-text-start !tw-text-fg-sidenav-text hover:tw-text-fg-sidenav-text hover:tw-no-underline focus:tw-outline-none [&_i]:tw-leading-[1.5rem]";
+  @let interactiveElClass =
+    "tw-size-full tw-px-0 tw-block tw-truncate tw-border-none tw-bg-transparent tw-text-start !tw-text-fg-sidenav-text hover:tw-text-fg-sidenav-text [&:is(.tw-test-hover_*)]:tw-text-fg-sidenav-text hover:tw-no-underline [&:is(.tw-test-hover_*)]:tw-no-underline focus:tw-outline-none [&:is(.tw-test-focus-visible_*)]:tw-no-underline [&_i]:tw-leading-[1.5rem]";
   @if (open || icon()) {
     <div
       [style.padding-inline-start]="navItemIndentationPadding()"
       class="tw-relative tw-rounded-xl tw-h-10 tw-py-1.5"
-      [class]="fvwStyles()"
-      [class.tw-bg-bg-sidenav-active-item]="showActiveStyles()"
-      [class.tw-bg-bg-sidenav-background]="!showActiveStyles()"
-      [class.hover:tw-bg-bg-sidenav-item-hover]="!showActiveStyles()"
-      [class.hover:tw-bg-bg-sidenav-active-item-hover]="showActiveStyles()"
+      [class]="
+        fvwStyles().concat(
+          showActiveStyles()
+            ? [
+                'tw-bg-bg-sidenav-active-item',
+                'hover:tw-bg-bg-sidenav-active-item-hover',
+                '[&:is(.tw-test-hover_*)]:tw-bg-bg-sidenav-active-item-hover',
+              ]
+            : [
+                'tw-bg-bg-sidenav-background',
+                'hover:tw-bg-bg-sidenav-item-hover',
+                '[&:is(.tw-test-hover_*)]:tw-bg-bg-sidenav-item-hover',
+              ]
+        )
+      "
     >
       <div class="tw-relative tw-flex tw-items-center tw-h-full">
         @if (open) {
           <div
-            class="tw-absolute tw-left-[0px] tw-transform tw--translate-x-[calc(100%_+_4px)] [&>*:focus-visible::before]:!tw-ring-border-focus"
+            class="tw-absolute tw-left-[0px] tw-transform tw--translate-x-[calc(100%_+_4px)]"
             [class]="startSlotHoverClass()"
           >
             <ng-content select="[slot=start]"></ng-content>
@@ -23,9 +33,8 @@
         }
         @if (route()) {
           <!-- The `data-fvw` attribute passes focus to `this.focusVisibleWithin` -->
-          <!-- The following `class` field should match the button class field below -->
           <a
-            [class]="containerClasses"
+            [class]="interactiveElClass"
             data-fvw
             [routerLink]="route()"
             [relativeTo]="relativeTo()"
@@ -42,10 +51,9 @@
             <ng-container *ngTemplateOutlet="anchorAndButtonContent"></ng-container>
           </a>
         } @else {
-          <!-- Class field should match anchor class field above -->
           <button
             type="button"
-            [class]="containerClasses"
+            [class]="interactiveElClass"
             data-fvw
             (click)="mainContentClicked.emit()"
           >
@@ -57,6 +65,11 @@
           <div
             class="tw-flex tw-items-center tw-gap-1 tw-pe-3 [&:has(button[biticonbutton])]:tw-pe-1 [&>*]:tw-text-fg-sidenav-text empty:tw-hidden"
             (click)="$event.stopPropagation()"
+            [class]="
+              showActiveStyles()
+                ? '[&>button[biticonbutton]]:hover:!tw-bg-bg-sidenav-active-arrow-hover [&>button[biticonbutton].tw-test-hover]:!tw-bg-bg-sidenav-active-arrow-hover'
+                : ''
+            "
           >
             <ng-content select="[slot=end]"></ng-content>
           </div>
@@ -75,12 +88,13 @@
     [class.tw-justify-center]="!open"
   >
     @if (icon()) {
-      <i
-        class="!tw-m-0 tw-w-4 tw-shrink-0 bwi bwi-fw tw-text-fg-sidenav-text"
-        [class]="icon()"
+      <bit-icon
+        class="!tw-m-0 tw-w-4 tw-shrink-0 tw-text-fg-sidenav-text"
+        [name]="icon()"
+        fixedWidth="true"
         [attr.aria-hidden]="open"
         [attr.aria-label]="text()"
-      ></i>
+      ></bit-icon>
     }
     @if (open) {
       <span class="tw-truncate">{{ text() }}</span>

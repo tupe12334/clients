@@ -8,7 +8,7 @@ export const focusRing = [
   "focus-visible:tw-ring-2",
   "focus-visible:tw-ring-offset-1",
   "focus-visible:tw-ring-border-focus",
-  "!focus-visible:tw-border-[transparent]",
+  "focus-visible:!tw-border-transparent",
   "focus-visible:tw-z-10",
 ];
 
@@ -135,6 +135,7 @@ export const getButtonColorStyles = (buttonType: ButtonType): string[] => {
       "hover:tw-text-fg-heading",
       "hover:tw-border-bg-quaternary",
       "focus-visible:tw-text-fg-heading",
+      "focus-visible:tw-bg-bg-quaternary",
     ],
     contrastOutline: [
       "tw-border-border-contrast",
@@ -149,21 +150,20 @@ export const getButtonColorStyles = (buttonType: ButtonType): string[] => {
       "tw-text-fg-contrast",
       "hover:tw-text-fg-contrast-strong",
       "hover:tw-bg-bg-hover-contrast",
+      "hover:tw-border-bg-hover-contrast",
       "focus-visible:tw-text-fg-contrast-strong",
       "focus-visible:tw-bg-bg-hover-contrast",
       "focus-visible:tw-border-bg-hover-contrast",
-      "hover:tw-border-bg-hover-contrast",
     ],
     "side-nav": [
       "!tw-text-fg-sidenav-text",
       "tw-border-transparent",
       "tw-bg-transparent",
       "hover:!tw-text-fg-sidenav-text",
-      "hover:tw-bg-hover-contrast",
+      "hover:tw-bg-bg-sidenav-arrow-hover",
       "focus-visible:!tw-ring-fg-sidenav-text",
       "focus-visible:!tw-ring-offset-bg-sidenav",
       "focus-visible:!tw-text-fg-sidenav-text",
-      "focus-visible:tw-bg-hover-contrast",
       "focus-visible:tw-border-transparent",
     ],
     unstyled: [],
@@ -196,7 +196,6 @@ export const getButtonColorStyles = (buttonType: ButtonType): string[] => {
       "tw-bg-clip-padding",
       "hover:tw-bg-bg-hover",
       "focus-visible:tw-bg-bg-hover",
-      "focus-visible:tw-border-transparent",
     );
   }
 
